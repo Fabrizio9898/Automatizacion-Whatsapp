@@ -1,0 +1,3 @@
+{
+  "extends": "@automatizacion_whatsapp/config/tsconfig.base.json"
+}
