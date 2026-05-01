@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@automatizacion_whatsapp/db": "workspace:*",
     "@automatizacion_whatsapp/env": "workspace:*",
     "@base-ui/react": "^1.4.1",
     "@fontsource-variable/inter": "^5.2.8",
@@ -17,9 +18,11 @@
     "@tanstack/react-table": "^8.21.3",
     "@uploadthing/react": "^7.3.3",
     "babel-plugin-react-compiler": "^1.0.0",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "catalog:",
+    "jose": "^6.2.3",
     "lucide-react": "^1.11.0",
     "next": "^16.2.4",
     "next-themes": "^0.4.6",
@@ -37,6 +40,7 @@
   "devDependencies": {
     "@automatizacion_whatsapp/config": "workspace:*",
     "@tailwindcss/postcss": "^4.2.4",
+    "@types/bcryptjs": "^3.0.0",
     "@types/node": "catalog:",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",

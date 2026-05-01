@@ -6,3 +6,6 @@ import * as schema from "./schema/index.js";
 
 const sql = neon(env.DATABASE_URL);
 export const db = drizzle(sql, { schema });
+
+
+export * from "drizzle-orm";
