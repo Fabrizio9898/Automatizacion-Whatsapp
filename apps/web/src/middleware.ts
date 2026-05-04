@@ -12,7 +12,7 @@ export function middleware(request: NextRequest) {
 
   // Si ya tiene sesión y trata de entrar al login, lo mandamos al dashboard
   if (session && request.nextUrl.pathname === "/login") {
-    return NextResponse.redirect(new URL("/", request.url));
+    return NextResponse.redirect(new URL("/dashboard", request.url));
   }
 
   return NextResponse.next();
@@ -28,6 +28,6 @@ export const config = {
      * - _next/image (imágenes)
      * - favicon.ico
      */
-    "/((?!api|_next/static|_next/image|favicon.ico|login).*)",
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
   ],
 };

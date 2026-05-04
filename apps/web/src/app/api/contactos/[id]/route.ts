@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { db, eq } from "@automatizacion_whatsapp/db";
-import { contactos } from "@automatizacion_whatsapp/db/schema/example";
+import { db, eq ,contactos} from "@automatizacion_whatsapp/db";
 import { contactoSchema } from "@/lib/validations/contactos";
 
 // ACTUALIZAR (UPDATE)

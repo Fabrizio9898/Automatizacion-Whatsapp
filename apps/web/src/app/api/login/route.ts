@@ -1,10 +1,9 @@
 // apps/web/app/api/login/route.ts
 import { NextResponse } from "next/server";
-import { eq,db } from "@automatizacion_whatsapp/db";
+import { eq, db, usuarios } from "@automatizacion_whatsapp/db";
 import bcrypt from "bcryptjs";
 import { SignJWT } from "jose";
 import { cookies } from "next/headers";
-import { usuarios } from "@automatizacion_whatsapp/db/schema/example";
 
 
 const JWT_SECRET = new TextEncoder().encode(
@@ -51,7 +50,7 @@ export async function POST(request: Request) {
 
     // 4. Establecer Cookie de sesión segura (HTTP-Only)
     const cookieStore = await cookies();
-    cookieStore.set("n8n_session", token, {
+    cookieStore.set("session_id", token, {
       httpOnly: true, // Evita lectura desde JavaScript (protección XSS)
       secure: process.env.NODE_ENV === "production", // Solo HTTPS en prod
       sameSite: "lax", // Protección CSRF

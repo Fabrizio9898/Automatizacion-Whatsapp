@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { db, desc } from "@automatizacion_whatsapp/db";
-import { contactos } from "@automatizacion_whatsapp/db/schema/example"; // Ajusta si cambiaste 'example' por 'index'
+import { db, desc,contactos } from "@automatizacion_whatsapp/db";
+import { z } from "zod";
 import { contactoSchema } from "@/lib/validations/contactos";
 
 // LEER (READ): Obtener todos los contactos
@@ -29,11 +29,10 @@ export async function POST(request: Request) {
     // 1. Validación estricta con Zod
     const result = contactoSchema.safeParse(body);
     if (!result.success) {
-      // Devolvemos los errores de validación para que el frontend los muestre
-      return NextResponse.json(
-        { success: false, error: result.error.flatten().fieldErrors },
-        { status: 400 },
-      );
+        return NextResponse.json(
+          { success: false, error: z.treeifyError(result.error) },
+          { status: 400 },
+        );
     }
 
     // 2. Inserción en Drizzle / Neon
