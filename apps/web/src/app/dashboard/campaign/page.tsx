@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { useCampaignStore } from "@/app/store/campaign.store";
 import { useUploadThing } from "@/lib/uploadthing";
+import Header from "@/components/pages/header";
 
 const COST_PER_MESSAGE = 0.05;
 const MOCK_CONTACTS_COUNT = 150;
@@ -104,8 +105,8 @@ export default function CampaignPage() {
 
       alert("Campaña enviada con éxito");
       // Opcional: resetear campos
-      // removeImage();
-      // setMessage("");
+      removeImage();
+      setMessage("");
     } catch (error) {
       console.error("Error en el proceso de envío:", error);
       alert("Error crítico en el envío de la campaña");
@@ -117,19 +118,7 @@ export default function CampaignPage() {
   return (
     <div className="container mx-auto p-6 space-y-8">
       {/* Header */}
-      <div className="flex items-center gap-3">
-        <div className="flex size-10 items-center justify-center rounded-lg border border-border bg-card shadow-sm text-primary">
-          <Send className="size-5" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold text-foreground">
-            Campaña de Mensajes
-          </h1>
-          <p className="text-sm text-muted-foreground">
-            Redacta y mide tu difusión
-          </p>
-        </div>
-      </div>
+      <Header title="Crear nueva campaña" description="Redacta tu mensaje, adjunta una imagen y envíalo a tus contactos de WhatsApp." />
 
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
         <div className="lg:col-span-3">
@@ -148,7 +137,7 @@ export default function CampaignPage() {
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
                 placeholder="Escribe tu mensaje aquí..."
-                className="min-h-[180px]"
+                className="min-h-45"
               />
 
               <div>
@@ -212,7 +201,7 @@ export default function CampaignPage() {
               <Button
                 onClick={handleSend}
                 disabled={!canSend}
-                className="min-w-[140px]"
+                className="min-w-35"
               >
                 {sending || isUploading ? (
                   <>
