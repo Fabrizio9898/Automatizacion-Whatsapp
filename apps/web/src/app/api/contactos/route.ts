@@ -1,5 +1,6 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import { db, desc,contactos } from "@automatizacion_whatsapp/db";
+import { db, desc, contactos } from "@automatizacion_whatsapp/db";
 import { z } from "zod";
 import { contactoSchema } from "@/lib/validations/contactos";
 
@@ -29,10 +30,10 @@ export async function POST(request: Request) {
     // 1. Validación estricta con Zod
     const result = contactoSchema.safeParse(body);
     if (!result.success) {
-        return NextResponse.json(
-          { success: false, error: z.treeifyError(result.error) },
-          { status: 400 },
-        );
+      return NextResponse.json(
+        { success: false, error: z.treeifyError(result.error) },
+        { status: 400 },
+      );
     }
 
     // 2. Inserción en Drizzle / Neon

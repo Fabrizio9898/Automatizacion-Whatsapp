@@ -6,7 +6,7 @@ export const ourFileRouter = {
   campaignImage: f({
     image: { maxFileSize: "4MB", maxFileCount: 1 },
   }).onUploadComplete(async ({ file }) => {
-    return { url: file.url };
+    return { url: file.ufsUrl };
   }),
 } satisfies FileRouter;
 

@@ -1,5 +1,6 @@
+export const dynamic = "force-dynamic";
 import { NextResponse } from "next/server";
-import { db, eq ,contactos} from "@automatizacion_whatsapp/db";
+import { db, eq, contactos } from "@automatizacion_whatsapp/db";
 import { contactoSchema } from "@/lib/validations/contactos";
 
 // ACTUALIZAR (UPDATE)
