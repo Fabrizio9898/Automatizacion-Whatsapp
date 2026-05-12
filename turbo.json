@@ -9,7 +9,8 @@
       "env": [
         "DATABASE_URL",
         "JWT_SECRET",
-        "UPLOADTHING_TOKEN"
+        "UPLOADTHING_TOKEN",
+        "CORS_ORIGIN"
       ]
     },
     "lint": {
