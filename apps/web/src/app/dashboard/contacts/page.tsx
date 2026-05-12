@@ -1,3 +1,4 @@
+// apps/web/app/(dashboard)/contactos/page.tsx (o donde resida ContactsClient)
 "use client";
 
 import { useState, useMemo } from "react";
@@ -29,9 +30,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-// Importamos lo que separamos
 import { getColumns, type Contact } from "@/components/contactos/column";
-import Header from "@/components/pages/header";
+import { ImportModal } from "@/components/contactos/import-modal"; // <- Agregado
+
 const MOCK_CONTACTS: Contact[] = [
   {
     id: crypto.randomUUID(),
@@ -47,7 +48,20 @@ const MOCK_CONTACTS: Contact[] = [
     createdAt: new Date(),
     updatedAt: new Date(),
   },
-  // ... (puedes agregar los demás aquí para probar)
+  {
+    id: crypto.randomUUID(),
+    nombre: "María Gómez",
+    numero: "5491198765432",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: crypto.randomUUID(),
+    nombre: "María Gómez",
+    numero: "5491198765432",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
 ];
 
 export default function ContactsClient() {
@@ -55,9 +69,13 @@ export default function ContactsClient() {
   const [globalFilter, setGlobalFilter] = useState("");
   const [rowSelection, setRowSelection] = useState({});
 
-  const [isSyncing, setIsSyncing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
+
+  // Estados del Modal de Sincronización
+  const [syncModalOpen, setSyncModalOpen] = useState(false);
+  const [syncStage, setSyncStage] = useState<"loading" | "success">("loading");
+  const [syncProgress, setSyncProgress] = useState(0);
 
   // Funciones de acción
   const handleDeleteOne = (id: string) => {
@@ -75,12 +93,32 @@ export default function ContactsClient() {
   };
 
   const handleSync = () => {
-    setIsSyncing(true);
-    setTimeout(() => {
-      setData(MOCK_CONTACTS);
-      setIsSyncing(false);
-      setLastSaved(null);
-    }, 1500);
+    setSyncStage("loading");
+    setSyncProgress(0);
+    setSyncModalOpen(true);
+
+    // Simulación de chunking/progreso.
+    // Reemplazar con polling a endpoint de estado o WebSocket/SSE si n8n expone progreso real.
+    let p = 0;
+    const interval = setInterval(() => {
+      p += Math.floor(Math.random() * 20) + 10;
+      if (p >= 100) {
+        p = 100;
+        setSyncProgress(100);
+        clearInterval(interval);
+
+        setTimeout(() => {
+          setData(MOCK_CONTACTS);
+          setSyncStage("success");
+          setLastSaved(null);
+
+          // Cerrar modal automáticamente después de mostrar el éxito
+          setTimeout(() => setSyncModalOpen(false), 1200);
+        }, 500);
+      } else {
+        setSyncProgress(p);
+      }
+    }, 300);
   };
 
   const handleSaveToDB = () => {
@@ -92,7 +130,6 @@ export default function ContactsClient() {
     }, 1000);
   };
 
-  // Traemos las columnas desde el módulo, inyectando la función de borrado
   const columns = useMemo(
     () => getColumns({ onDelete: handleDeleteOne }),
     [data],
@@ -117,13 +154,9 @@ export default function ContactsClient() {
   });
 
   return (
-    <div className="container mx-auto p-6 space-y-8">
+    <>
       <div className="flex h-[calc(100vh-8rem)] flex-col gap-4">
         {/* TOOLBAR */}
-        <Header
-          title="Mis contactos"
-          description="Administra tus contactos de WhatsApp. Sincroniza con n8n, guarda cambios y elimina contactos fácilmente."
-        />
         <div className="flex shrink-0 flex-col gap-3 rounded-lg border border-border bg-card p-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative flex-1 sm:max-w-sm">
             <Search
@@ -155,13 +188,9 @@ export default function ContactsClient() {
               variant="outline"
               size="sm"
               onClick={handleSync}
-              disabled={isSyncing}
+              disabled={syncModalOpen}
             >
-              {isSyncing ? (
-                <Loader2 className="mr-2 size-4 animate-spin" />
-              ) : (
-                <Download className="mr-2 size-4" />
-              )}
+              <Download className="mr-2 size-4" />
               Sincronizar n8n
             </Button>
 
@@ -278,6 +307,13 @@ export default function ContactsClient() {
           </div>
         )}
       </div>
-    </div>
+
+      <ImportModal
+        open={syncModalOpen}
+        onOpenChange={setSyncModalOpen}
+        progress={syncProgress}
+        stage={syncStage}
+      />
+    </>
   );
 }
