@@ -8,8 +8,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner"; // <-- Importamos las alertas de Sonner
 import { useRouter } from "next/navigation"; // <-- Para redirigir
-
+import { Eye, EyeOff } from "lucide-react"; // Iconos de Lucide
+import { useState } from "react";
 export function LoginForm() {
+  const [showPassword, setShowPassword] = useState(false);
   const router = useRouter();
 
   const form = useForm({
@@ -59,7 +61,7 @@ export function LoginForm() {
             <Label htmlFor="email">Email</Label>
             <Input
               id="email"
-              name="email" 
+              name="email"
               autoComplete="username"
               value={field.state.value}
               onBlur={field.handleBlur}
@@ -76,15 +78,31 @@ export function LoginForm() {
         children={(field) => (
           <div className="space-y-1">
             <Label htmlFor="password">Contraseña</Label>
-            <Input
-              id="password"
-              type="password"
-              name="password" 
-              autoComplete="current-password"
-              value={field.state.value}
-              onBlur={field.handleBlur}
-              onChange={(e) => field.handleChange(e.target.value)}
-            />
+            <div className="relative">
+              <Input
+                id="password"
+                // Aquí cambiamos el tipo dinámicamente
+                type={showPassword ? "text" : "password"}
+                name="password"
+                autoComplete="current-password"
+                value={field.state.value}
+                onBlur={field.handleBlur}
+                onChange={(e) => field.handleChange(e.target.value)}
+                className="pr-10" // Padding a la derecha para que el texto no tape el ojo
+              />
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground transition-colors"
+                tabIndex={-1} // Evita que el foco del teclado se trabe aquí
+              >
+                {showPassword ? (
+                  <EyeOff className="h-4 w-4" />
+                ) : (
+                  <Eye className="h-4 w-4" />
+                )}
+              </button>
+            </div>
           </div>
         )}
       />
